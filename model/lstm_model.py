@@ -33,7 +33,6 @@ class LSTMModel:
         """Huấn luyện mô hình LSTM Multi-Output (không có HMM)."""
         print("Fit Scaler chỉ trên tập Train...")
         
-        # <<< THAY ĐỔI: Không còn logic HMM >>>
         train_input_df = train_features_df.copy()
         val_input_df = val_features_df.copy()
 
@@ -73,7 +72,6 @@ class LSTMModel:
         n_forecast_horizon = self.lstm_model.output_shape[1]
         last_n_steps_data = features_df.tail(self.n_steps_in)
         
-        # <<< THAY ĐỔI: Không còn logic HMM >>>
         scaled_input = self.scaler.transform(last_n_steps_data)
         input_batch = scaled_input.reshape(1, self.n_steps_in, self.n_features)
 
@@ -93,7 +91,6 @@ class LSTMModel:
         print(f"Mô hình LSTM đã được lưu vào thư mục '{model_dir}'")
 
     def load_model(self, model_dir, symbol, timeframe):
-        # <<< THAY ĐỔI: Chỉ tải LSTM và Scaler >>>
         lstm_path = os.path.join(model_dir, f'{symbol}_{timeframe}_lstm_only.h5')
         scaler_path = os.path.join(model_dir, f'{symbol}_{timeframe}_scaler_only.pkl')
 
@@ -125,7 +122,6 @@ class LSTMModel:
             
             input_features = all_features_df.iloc[start_input_idx : current_idx]
             
-            # <<< THAY ĐỔI Ở ĐÂY: Bỏ tham số thứ hai khi gọi forecast >>>
             predicted_sequence = self.forecast(input_features)
             
             # Logic còn lại giữ nguyên

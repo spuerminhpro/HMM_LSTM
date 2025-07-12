@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 from eval_metric import calculate_all_metrics
 class HybridModel:
     def __init__(self, n_steps_in=60, n_hidden_states=8, epochs=200):
-        # <<< THAY ĐỔI: Đổi tên n_steps thành n_steps_in để rõ ràng hơn >>>
         self.n_steps_in = n_steps_in
         self.n_hidden_states = n_hidden_states
         self.n_features = None
@@ -21,7 +20,6 @@ class HybridModel:
         self.scaler = None
         self.epochs = epochs
 
-    # <<< THAY ĐỔI: Hàm tạo dataset hoàn toàn mới cho Multi-Output >>>
     def _create_multi_output_dataset(self, dataset, n_steps_out):
         """
         Tạo dataset với input là một chuỗi và output là một chuỗi.
@@ -41,7 +39,6 @@ class HybridModel:
             y.append(seq_y)
         return np.array(X), np.array(y)
 
-    # <<< THAY ĐỔI: Hàm train được cập nhật để xây dựng mô hình Multi-Output >>>
     def train(self, train_features_df, val_features_df, n_forecast_horizon):
         """
         Huấn luyện mô hình Multi-Output.
@@ -90,7 +87,6 @@ class HybridModel:
                             callbacks=[early_stopping],
                             verbose=1)
 
-    # <<< THAY ĐỔI: Hàm forecast giờ sẽ dự đoán cả chuỗi trong 1 lần >>>
     def forecast(self, features_df):
         """
         Dự báo một chuỗi tương lai bằng mô hình Multi-Output.
@@ -167,7 +163,6 @@ class HybridModel:
         """
         print(f"\n--- Bắt đầu Đánh giá cho bộ đặc trưng: '{feature_set_name}' ---")
         
-        # <<< THAY ĐỔI QUAN TRỌNG: Tự suy ra horizon >>>
         try:
             # Lấy số nơ-ron ở lớp output của mô hình LSTM
             n_forecast_horizon = self.lstm_model.output_shape[1]
@@ -234,7 +229,6 @@ class HybridModel:
         ax.axvspan(all_features_df.index[train_end_idx], all_features_df.index[val_end_idx], color='yellow', alpha=0.1, label='Tập Thẩm định')
         ax.axvspan(all_features_df.index[val_end_idx], all_features_df.index[-1], color='red', alpha=0.1, label='Tập Kiểm tra')
 
-        # <<< THAY ĐỔI 1: Tiêu đề động >>>
         ax.set_title(f'So sánh Dự đoán và Thực tế - Bộ đặc trưng: {feature_set_name}', fontsize=18)
         
         ax.set_xlabel('Ngày', fontsize=14)
@@ -242,7 +236,6 @@ class HybridModel:
         ax.legend(fontsize=12)
         plt.grid(True)
         
-        # <<< THAY ĐỔI 2: Tên file động >>>
         # Làm sạch tên bộ đặc trưng để dùng làm tên file
         safe_filename = feature_set_name.replace('+', '_').replace(' ', '').lower()
         plot_filename = f'evaluation_plot_{safe_filename}.png'
